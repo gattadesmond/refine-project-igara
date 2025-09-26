@@ -322,7 +322,7 @@ export const GaragesList = () => {
     >
       <div className="tw-space-y-4">
         {/* Search and Filters */}
-        <Card className="tw-shadow-sm">
+        <Card className="tw-shadow-sm tw-hidden">
           <Row gutter={[16, 16]} align="middle">
             <Col xs={24} sm={8} md={6}>
               <Input
