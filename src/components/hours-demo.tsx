@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 const { Title, Text } = Typography;
 
 export const HoursDemo = () => {
-  const [hours, setHours] = useState([]);
+  const [hours, setHours] = useState<any[]>([]);
 
   const addHour = () => {
     setHours([...hours, { days: "", open: "08:00", close: "18:00" }]);

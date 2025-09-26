@@ -108,6 +108,189 @@ const HoursOfOperationForm = ({ value, onChange }: { value?: any[], onChange?: (
   );
 };
 
+// Pricing Component
+const PricingForm = ({ value, onChange }: { value?: any[], onChange?: (value: any[]) => void }) => {
+  const [pricing, setPricing] = useState(value || []);
+
+  // Sync with form value
+  useEffect(() => {
+    if (value) {
+      setPricing(value);
+    }
+  }, [value]);
+
+  const addPricing = () => {
+    const newPricing = [...pricing, { eta: "", service: "", price_vnd: "" }];
+    setPricing(newPricing);
+    onChange?.(newPricing);
+  };
+
+  const removePricing = (index: number) => {
+    const newPricing = pricing.filter((_, i) => i !== index);
+    setPricing(newPricing);
+    onChange?.(newPricing);
+  };
+
+  const updatePricing = (index: number, field: string, value: any) => {
+    const newPricing = pricing.map((item, i) => 
+      i === index ? { ...item, [field]: value } : item
+    );
+    setPricing(newPricing);
+    onChange?.(newPricing);
+  };
+
+  return (
+    <div className="tw-space-y-4">
+      {pricing.length === 0 ? (
+        <div className="tw-text-center tw-py-8 tw-text-gray-500">
+          <Text>Chưa có bảng giá nào. Hãy thêm bảng giá cho garage.</Text>
+        </div>
+      ) : (
+        pricing.map((item, index) => (
+          <Card key={index} size="small" className="tw-bg-gray-50">
+            <Row gutter={[16, 16]} align="middle">
+              <Col xs={24} sm={8}>
+                <Form.Item label="Dịch vụ" className="tw-mb-0">
+                  <Input
+                    value={item.service}
+                    onChange={(e) => updatePricing(index, 'service', e.target.value)}
+                    placeholder="Bảo dưỡng định kỳ"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={4}>
+                <Form.Item label="Thời gian" className="tw-mb-0">
+                  <Input
+                    value={item.eta}
+                    onChange={(e) => updatePricing(index, 'eta', e.target.value)}
+                    placeholder="2-3 giờ"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={4}>
+                <Form.Item label="Giá (VND)" className="tw-mb-0">
+                  <Input
+                    value={item.price_vnd}
+                    onChange={(e) => updatePricing(index, 'price_vnd', e.target.value)}
+                    placeholder="700.000 – 1.800.000"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={8} className="tw-text-right">
+                <Button
+                  type="text"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={() => removePricing(index)}
+                  disabled={pricing.length <= 1}
+                >
+                  Xóa
+                </Button>
+              </Col>
+            </Row>
+          </Card>
+        ))
+      )}
+      
+      <Button
+        type="dashed"
+        onClick={addPricing}
+        icon={<PlusOutlined />}
+        className="tw-w-full"
+      >
+        Thêm bảng giá
+      </Button>
+    </div>
+  );
+};
+
+// Technical Information Component
+const TechnicalInformationForm = ({ value, onChange }: { value?: any[], onChange?: (value: any[]) => void }) => {
+  const [technicalInfo, setTechnicalInfo] = useState(value || []);
+
+  // Sync with form value
+  useEffect(() => {
+    if (value) {
+      setTechnicalInfo(value);
+    }
+  }, [value]);
+
+  const addTechnicalInfo = () => {
+    const newTechnicalInfo = [...technicalInfo, { title: "", value: "" }];
+    setTechnicalInfo(newTechnicalInfo);
+    onChange?.(newTechnicalInfo);
+  };
+
+  const removeTechnicalInfo = (index: number) => {
+    const newTechnicalInfo = technicalInfo.filter((_, i) => i !== index);
+    setTechnicalInfo(newTechnicalInfo);
+    onChange?.(newTechnicalInfo);
+  };
+
+  const updateTechnicalInfo = (index: number, field: string, value: any) => {
+    const newTechnicalInfo = technicalInfo.map((item, i) => 
+      i === index ? { ...item, [field]: value } : item
+    );
+    setTechnicalInfo(newTechnicalInfo);
+    onChange?.(newTechnicalInfo);
+  };
+
+  return (
+    <div className="tw-space-y-4">
+      {technicalInfo.length === 0 ? (
+        <div className="tw-text-center tw-py-8 tw-text-gray-500">
+          <Text>Chưa có thông tin kỹ thuật nào. Hãy thêm thông tin kỹ thuật cho garage.</Text>
+        </div>
+      ) : (
+        technicalInfo.map((item, index) => (
+          <Card key={index} size="small" className="tw-bg-gray-50">
+            <Row gutter={[16, 16]} align="middle">
+              <Col xs={24} sm={12}>
+                <Form.Item label="Tiêu đề" className="tw-mb-0">
+                  <Input
+                    value={item.title}
+                    onChange={(e) => updateTechnicalInfo(index, 'title', e.target.value)}
+                    placeholder="Số cầu nâng"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={8}>
+                <Form.Item label="Giá trị" className="tw-mb-0">
+                  <Input
+                    value={item.value}
+                    onChange={(e) => updateTechnicalInfo(index, 'value', e.target.value)}
+                    placeholder="5"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={4} className="tw-text-right">
+                <Button
+                  type="text"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={() => removeTechnicalInfo(index)}
+                  disabled={technicalInfo.length <= 1}
+                >
+                  Xóa
+                </Button>
+              </Col>
+            </Row>
+          </Card>
+        ))
+      )}
+      
+      <Button
+        type="dashed"
+        onClick={addTechnicalInfo}
+        icon={<PlusOutlined />}
+        className="tw-w-full"
+      >
+        Thêm thông tin kỹ thuật
+      </Button>
+    </div>
+  );
+};
+
 export const GaragesCreate = () => {
   const { formProps, saveButtonProps } = useForm({
     resource: "garages",
@@ -299,6 +482,36 @@ export const GaragesCreate = () => {
                   help="Thiết lập giờ hoạt động cho từng ngày trong tuần"
                 >
                   <HoursOfOperationForm />
+                </Form.Item>
+              </Space>
+            </Card>
+          </Col>
+
+          {/* Pricing */}
+          <Col xs={24}>
+            <Card title="Bảng giá dịch vụ" className="tw-shadow-sm">
+              <Space direction="vertical" size="large" className="tw-w-full">
+                <Form.Item
+                  label="Bảng giá"
+                  name="pricing"
+                  help="Thiết lập bảng giá cho các dịch vụ của garage"
+                >
+                  <PricingForm />
+                </Form.Item>
+              </Space>
+            </Card>
+          </Col>
+
+          {/* Technical Information */}
+          <Col xs={24}>
+            <Card title="Thông tin kỹ thuật" className="tw-shadow-sm">
+              <Space direction="vertical" size="large" className="tw-w-full">
+                <Form.Item
+                  label="Thông tin kỹ thuật"
+                  name="technical_information"
+                  help="Thiết lập thông tin kỹ thuật của garage"
+                >
+                  <TechnicalInformationForm />
                 </Form.Item>
               </Space>
             </Card>
