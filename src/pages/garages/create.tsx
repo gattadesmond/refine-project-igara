@@ -291,6 +291,181 @@ const TechnicalInformationForm = ({ value, onChange }: { value?: any[], onChange
   );
 };
 
+// FAQ Component
+const FAQForm = ({ value, onChange }: { value?: any[], onChange?: (value: any[]) => void }) => {
+  const [faq, setFaq] = useState(value || []);
+
+  // Sync with form value
+  useEffect(() => {
+    if (value) {
+      setFaq(value);
+    }
+  }, [value]);
+
+  const addFAQ = () => {
+    const newFAQ = [...faq, { q: "", a: "" }];
+    setFaq(newFAQ);
+    onChange?.(newFAQ);
+  };
+
+  const removeFAQ = (index: number) => {
+    const newFAQ = faq.filter((_, i) => i !== index);
+    setFaq(newFAQ);
+    onChange?.(newFAQ);
+  };
+
+  const updateFAQ = (index: number, field: string, value: any) => {
+    const newFAQ = faq.map((item, i) => 
+      i === index ? { ...item, [field]: value } : item
+    );
+    setFaq(newFAQ);
+    onChange?.(newFAQ);
+  };
+
+  return (
+    <div className="tw-space-y-4">
+      {faq.length === 0 ? (
+        <div className="tw-text-center tw-py-8 tw-text-gray-500">
+          <Text>Chưa có câu hỏi thường gặp nào. Hãy thêm FAQ cho garage.</Text>
+        </div>
+      ) : (
+        faq.map((item, index) => (
+          <Card key={index} size="small" className="tw-bg-gray-50">
+            <Row gutter={[16, 16]} align="top">
+              <Col xs={24} sm={12}>
+                <Form.Item label="Câu hỏi" className="tw-mb-0">
+                  <Input
+                    value={item.q}
+                    onChange={(e) => updateFAQ(index, 'q', e.target.value)}
+                    placeholder="AutosOnly có nhận sửa xe nhập khẩu không?"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Form.Item label="Câu trả lời" className="tw-mb-0">
+                  <TextArea
+                    value={item.a}
+                    onChange={(e) => updateFAQ(index, 'a', e.target.value)}
+                    placeholder="Có, chúng tôi sửa tất cả dòng xe nhập khẩu với thiết bị chẩn đoán hiện đại."
+                    rows={3}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} className="tw-text-right">
+                <Button
+                  type="text"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={() => removeFAQ(index)}
+                  disabled={faq.length <= 1}
+                >
+                  Xóa
+                </Button>
+              </Col>
+            </Row>
+          </Card>
+        ))
+      )}
+      
+      <Button
+        type="dashed"
+        onClick={addFAQ}
+        icon={<PlusOutlined />}
+        className="tw-w-full"
+      >
+        Thêm câu hỏi thường gặp
+      </Button>
+    </div>
+  );
+};
+
+// Certificate Component
+const CertificateForm = ({ value, onChange }: { value?: any[], onChange?: (value: any[]) => void }) => {
+  const [certificates, setCertificates] = useState(value || []);
+
+  // Sync with form value
+  useEffect(() => {
+    if (value) {
+      setCertificates(value);
+    }
+  }, [value]);
+
+  const addCertificate = () => {
+    const newCertificates = [...certificates, { title: "", value: "" }];
+    setCertificates(newCertificates);
+    onChange?.(newCertificates);
+  };
+
+  const removeCertificate = (index: number) => {
+    const newCertificates = certificates.filter((_, i) => i !== index);
+    setCertificates(newCertificates);
+    onChange?.(newCertificates);
+  };
+
+  const updateCertificate = (index: number, field: string, value: any) => {
+    const newCertificates = certificates.map((item, i) => 
+      i === index ? { ...item, [field]: value } : item
+    );
+    setCertificates(newCertificates);
+    onChange?.(newCertificates);
+  };
+
+  return (
+    <div className="tw-space-y-4">
+      {certificates.length === 0 ? (
+        <div className="tw-text-center tw-py-8 tw-text-gray-500">
+          <Text>Chưa có chứng chỉ nào. Hãy thêm chứng chỉ cho garage.</Text>
+        </div>
+      ) : (
+        certificates.map((item, index) => (
+          <Card key={index} size="small" className="tw-bg-gray-50">
+            <Row gutter={[16, 16]} align="middle">
+              <Col xs={24} sm={12}>
+                <Form.Item label="Tiêu đề" className="tw-mb-0">
+                  <Input
+                    value={item.title}
+                    onChange={(e) => updateCertificate(index, 'title', e.target.value)}
+                    placeholder="Chứng chỉ"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={8}>
+                <Form.Item label="Giá trị" className="tw-mb-0">
+                  <Input
+                    value={item.value}
+                    onChange={(e) => updateCertificate(index, 'value', e.target.value)}
+                    placeholder="Đối tác chính thức của Honda, Toyota Certified"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={4} className="tw-text-right">
+                <Button
+                  type="text"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={() => removeCertificate(index)}
+                  disabled={certificates.length <= 1}
+                >
+                  Xóa
+                </Button>
+              </Col>
+            </Row>
+          </Card>
+        ))
+      )}
+      
+      <Button
+        type="dashed"
+        onClick={addCertificate}
+        icon={<PlusOutlined />}
+        className="tw-w-full"
+      >
+        Thêm chứng chỉ
+      </Button>
+    </div>
+  );
+};
+
 export const GaragesCreate = () => {
   const { formProps, saveButtonProps } = useForm({
     resource: "garages",
@@ -512,6 +687,36 @@ export const GaragesCreate = () => {
                   help="Thiết lập thông tin kỹ thuật của garage"
                 >
                   <TechnicalInformationForm />
+                </Form.Item>
+              </Space>
+            </Card>
+          </Col>
+
+          {/* FAQ */}
+          <Col xs={24}>
+            <Card title="Câu hỏi thường gặp" className="tw-shadow-sm">
+              <Space direction="vertical" size="large" className="tw-w-full">
+                <Form.Item
+                  label="FAQ"
+                  name="faq"
+                  help="Thiết lập câu hỏi thường gặp cho garage"
+                >
+                  <FAQForm />
+                </Form.Item>
+              </Space>
+            </Card>
+          </Col>
+
+          {/* Certificate */}
+          <Col xs={24}>
+            <Card title="Chứng chỉ & Giấy phép" className="tw-shadow-sm">
+              <Space direction="vertical" size="large" className="tw-w-full">
+                <Form.Item
+                  label="Chứng chỉ"
+                  name="certificate"
+                  help="Thiết lập chứng chỉ và giấy phép của garage"
+                >
+                  <CertificateForm />
                 </Form.Item>
               </Space>
             </Card>
