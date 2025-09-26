@@ -3,7 +3,6 @@ import {
   useTable,
   List,
   EditButton,
-  ShowButton,
   DeleteButton,
   CreateButton,
 } from "@refinedev/antd";
@@ -129,9 +128,6 @@ export const GaragesList = () => {
           </div>
         }
         actions={[
-          <Tooltip title="Xem chi tiết">
-            <ShowButton recordItemId={record.id} />
-          </Tooltip>,
           <Tooltip title="Chỉnh sửa">
             <EditButton recordItemId={record.id} />
           </Tooltip>,
@@ -261,7 +257,6 @@ export const GaragesList = () => {
       key: "actions",
       render: (_: any, record: any) => (
         <Space>
-          <ShowButton recordItemId={record.id} />
           <EditButton recordItemId={record.id} />
           <DeleteButton recordItemId={record.id} />
         </Space>

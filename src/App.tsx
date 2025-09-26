@@ -46,7 +46,6 @@ import {
   GaragesList,
   GaragesCreate,
   GaragesEdit,
-  GaragesShow,
 } from "./pages/garages";
 import {
   GarageAmenitiesList,
@@ -87,8 +86,7 @@ function App() {
                   name: "garages",
                   list: "/garages",
                   create: "/garages/create",
-                  edit: "/garages/edit/:id",
-                  show: "/garages/show/:id"
+                  edit: "/garages/edit/:id"
                 }, {
                   name: "garage_amenities",
                   list: "/garage_amenities",
@@ -140,7 +138,6 @@ function App() {
                       <Route index element={<GaragesList />} />
                       <Route path="create" element={<GaragesCreate />} />
                       <Route path="edit/:id" element={<GaragesEdit />} />
-                      <Route path="show/:id" element={<GaragesShow />} />
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
