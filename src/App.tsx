@@ -59,6 +59,7 @@ import { supabaseClient } from "./utility";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Header } from "./components/header";
 import authProvider from "./authProvider";
+import { TestTailwind } from "./pages/test-tailwind";
 
 function App() {
   return (
@@ -142,6 +143,7 @@ function App() {
                       <Route path="edit/:id" element={<GaragesEdit />} />
                       <Route path="show/:id" element={<GaragesShow />} />
                     </Route>
+                    <Route path="/test-tailwind" element={<TestTailwind />} />
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                   <Route

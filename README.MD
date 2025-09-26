@@ -46,3 +46,6 @@ To learn more about **Refine**, please check out the [Documentation](https://ref
 ## License
 
 MIT
+
+
+string owner_user_id uuid string name text string slug text string address_text text string rating numeric number google_place_id text string lat double precision number lng double precision number detail jsonb json amenity_ids uuid[] array main_service_ids uuid[] array status public.garage_status
