@@ -553,12 +553,20 @@ export const GaragesEdit = () => {
                   />
                 </Form.Item>
 
-                <Form.Item
-                  label="Google Place ID"
-                  name="google_place_id"
-                >
-                  <Input placeholder="ChIJ..." />
-                </Form.Item>
+                    <Form.Item
+                      label="Google Place ID"
+                      name="google_place_id"
+                    >
+                      <Input placeholder="ChIJ..." />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="YouTube ID"
+                      name="youtube_id"
+                      help="ID video YouTube của garage (ví dụ: dQw4w9WgXcQ)"
+                    >
+                      <Input placeholder="dQw4w9WgXcQ" />
+                    </Form.Item>
               </Space>
             </Card>
           </Col>
