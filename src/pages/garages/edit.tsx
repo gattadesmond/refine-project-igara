@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, InputNumber, Switch, Row, Col, Typography, Card, Space, Button } from "antd";
 import { supabaseClient } from "../../utility";
+import slugify from "slugify";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -26,6 +27,19 @@ export const GaragesEdit = () => {
     optionValue: "id",
   });
 
+  // Auto-generate slug from name
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
+    if (name) {
+      const slug = slugify(name, {
+        lower: true,
+        strict: true,
+        remove: /[*+~.()'"!:@]/g
+      });
+      formProps.form?.setFieldValue('slug', slug);
+    }
+  };
+
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" size="large">
@@ -39,15 +53,24 @@ export const GaragesEdit = () => {
                   name="name"
                   rules={[{ required: true, message: "Vui lòng nhập tên garage" }]}
                 >
-                  <Input placeholder="Nhập tên garage" />
+                  <Input 
+                    placeholder="Nhập tên garage" 
+                    onChange={handleNameChange}
+                  />
                 </Form.Item>
 
                 <Form.Item
                   label="Slug"
                   name="slug"
-                  rules={[{ required: true, message: "Vui lòng nhập slug" }]}
+                  
+                  help="Slug được tự động tạo từ tên garage"
                 >
-                  <Input placeholder="garage-name-slug" />
+                  <Input 
+                    placeholder="garage-name-slug" 
+                    readOnly
+                    disabled
+                    className="tw-bg-gray-50"
+                  />
                 </Form.Item>
 
                 <Form.Item
