@@ -42,6 +42,12 @@ import {
   StoriesEdit,
   StoriesShow,
 } from "./pages/stories";
+import {
+  GaragesList,
+  GaragesCreate,
+  GaragesEdit,
+  GaragesShow,
+} from "./pages/garages";
 import { AppIcon } from "./components/app-icon";
 import { supabaseClient } from "./utility";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -62,38 +68,40 @@ function App() {
                 authProvider={authProvider}
                 routerProvider={routerProvider}
                 notificationProvider={useNotificationProvider}
-                resources={[
-                  {
-                    name: "blog_posts",
-                    list: "/blog-posts",
-                    create: "/blog-posts/create",
-                    edit: "/blog-posts/edit/:id",
-                    show: "/blog-posts/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
+                resources={[{
+                  name: "blog_posts",
+                  list: "/blog-posts",
+                  create: "/blog-posts/create",
+                  edit: "/blog-posts/edit/:id",
+                  show: "/blog-posts/show/:id",
+                  meta: {
+                    canDelete: true,
                   },
-                  {
-                    name: "categories",
-                    list: "/categories",
-                    create: "/categories/create",
-                    edit: "/categories/edit/:id",
-                    show: "/categories/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
+                }, {
+                  name: "categories",
+                  list: "/categories",
+                  create: "/categories/create",
+                  edit: "/categories/edit/:id",
+                  show: "/categories/show/:id",
+                  meta: {
+                    canDelete: true,
                   },
-                  {
-                    name: "stories",
-                    list: "/stories",
-                    create: "/stories/create",
-                    edit: "/stories/edit/:id",
-                    show: "/stories/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
+                }, {
+                  name: "stories",
+                  list: "/stories",
+                  create: "/stories/create",
+                  edit: "/stories/edit/:id",
+                  show: "/stories/show/:id",
+                  meta: {
+                    canDelete: true,
                   },
-                ]}
+                }, {
+                  name: "garages",
+                  list: "/garages",
+                  create: "/garages/create",
+                  edit: "/garages/edit/:id",
+                  show: "/garages/show/:id"
+                }]}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -138,6 +146,12 @@ function App() {
                       <Route path="create" element={<StoriesCreate />} />
                       <Route path="edit/:id" element={<StoriesEdit />} />
                       <Route path="show/:id" element={<StoriesShow />} />
+                    </Route>
+                    <Route path="/garages">
+                      <Route index element={<GaragesList />} />
+                      <Route path="create" element={<GaragesCreate />} />
+                      <Route path="edit/:id" element={<GaragesEdit />} />
+                      <Route path="show/:id" element={<GaragesShow />} />
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
