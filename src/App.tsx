@@ -73,7 +73,12 @@ function App() {
                 authProvider={authProvider}
                 routerProvider={routerProvider}
                 notificationProvider={useNotificationProvider}
-                resources={[ {
+                resources={[{
+                  name: "garages",
+                  list: "/garages",
+                  create: "/garages/create",
+                  edit: "/garages/edit/:id"
+                }, {
                   name: "garage_main_services",
                   list: "/garage_main_services",
                   create: "/garage_main_services/create",
@@ -82,11 +87,6 @@ function App() {
                   meta: {
                     canDelete: true,
                   },
-                }, {
-                  name: "garages",
-                  list: "/garages",
-                  create: "/garages/create",
-                  edit: "/garages/edit/:id"
                 }, {
                   name: "garage_amenities",
                   list: "/garage_amenities",
@@ -121,7 +121,7 @@ function App() {
                       index
                       element={<NavigateToResource resource="blog_posts" />}
                     />
-                  
+
                     <Route path="/garage_main_services">
                       <Route index element={<GarageMainServicesList />} />
                       <Route path="create" element={<GarageMainServicesCreate />} />

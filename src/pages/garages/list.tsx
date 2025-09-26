@@ -109,24 +109,35 @@ export const GaragesList = () => {
     <Col xs={24} sm={12} lg={8} xl={6} key={record.id}>
       <Card
         className="tw-h-full tw-shadow-md hover:tw-shadow-lg tw-transition-shadow"
-        cover={
-          <div className="tw-relative tw-h-48 tw-bg-gradient-to-br tw-from-blue-500 tw-to-purple-600 tw-flex tw-items-center tw-justify-center">
-            {/* <div className="tw-text-center tw-text-white">
-              <EnvironmentOutlined className="tw-text-4xl tw-mb-2" />
-              <Text className="tw-text-white tw-text-sm">
-                {record.address_text}
-              </Text>
-            </div> */}
-            <Badge
-              count={getStatusText(record.status)}
-              style={{
-                backgroundColor: getStatusColor(record.status) === 'green' ? '#52c41a' :
-                  getStatusColor(record.status) === 'red' ? '#ff4d4f' : '#faad14'
-              }}
-              className="tw-absolute tw-top-2 tw-right-2"
-            />
-          </div>
-        }
+            cover={
+              <div className="tw-relative tw-h-48 tw-bg-gradient-to-br tw-from-blue-500 tw-to-purple-600 tw-flex tw-items-center tw-justify-center">
+                {record.cover_image ? (
+                  <img 
+                    src={record.cover_image} 
+                    alt={record.name}
+                    className="tw-w-full tw-h-full tw-object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                      if (nextElement) {
+                        nextElement.style.display = 'flex';
+                      }
+                    }}
+                  />
+                ) : null}
+                <div className="tw-text-center tw-text-white tw-flex tw-items-center tw-justify-center tw-w-full tw-h-full">
+                  <EnvironmentOutlined className="tw-text-4xl tw-mb-2" />
+                </div>
+                <Badge
+                  count={getStatusText(record.status)}
+                  style={{
+                    backgroundColor: getStatusColor(record.status) === 'green' ? '#52c41a' :
+                      getStatusColor(record.status) === 'red' ? '#ff4d4f' : '#faad14'
+                  }}
+                  className="tw-absolute tw-top-2 tw-right-2"
+                />
+              </div>
+            }
         actions={[
           <Tooltip title="Chỉnh sửa">
             <EditButton recordItemId={record.id} />
@@ -184,13 +195,22 @@ export const GaragesList = () => {
             </div>
           )}
 
-          {record.main_service_ids && record.main_service_ids.length > 0 && (
-            <div>
-              <Text className="tw-text-xs tw-text-gray-500 tw-block tw-mb-1">
-                Dịch vụ chính: {record.main_service_ids.length} items
-              </Text>
-            </div>
-          )}
+              {record.main_service_ids && record.main_service_ids.length > 0 && (
+                <div>
+                  <Text className="tw-text-xs tw-text-gray-500 tw-block tw-mb-1">
+                    Dịch vụ chính: {record.main_service_ids.length} items
+                  </Text>
+                </div>
+              )}
+
+              {record.youtube_id && (
+                <div className="tw-flex tw-items-center tw-space-x-2">
+                  <Text className="tw-text-xs tw-text-gray-500">YouTube:</Text>
+                  <Text className="tw-text-xs tw-text-blue-600 tw-truncate">
+                    {record.youtube_id}
+                  </Text>
+                </div>
+              )}
         </div>
       </Card>
     </Col>
@@ -243,15 +263,29 @@ export const GaragesList = () => {
         </Tag>
       ),
     },
-    {
-      title: "Tọa độ",
-      key: "coordinates",
-      render: (record: any) => (
-        <Text className="tw-text-xs tw-text-gray-500">
-          {record.lat?.toFixed(4)}, {record.lng?.toFixed(4)}
-        </Text>
-      ),
-    },
+        {
+          title: "Tọa độ",
+          key: "coordinates",
+          render: (record: any) => (
+            <Text className="tw-text-xs tw-text-gray-500">
+              {record.lat?.toFixed(4)}, {record.lng?.toFixed(4)}
+            </Text>
+          ),
+        },
+        {
+          title: "YouTube ID",
+          dataIndex: "youtube_id",
+          key: "youtube_id",
+          render: (youtubeId: string) => (
+            youtubeId ? (
+              <Text className="tw-text-xs tw-text-blue-600 tw-truncate">
+                {youtubeId}
+              </Text>
+            ) : (
+              <Text className="tw-text-xs tw-text-gray-400">-</Text>
+            )
+          ),
+        },
     {
       title: "Hành động",
       key: "actions",

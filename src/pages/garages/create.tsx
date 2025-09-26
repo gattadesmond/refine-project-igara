@@ -583,14 +583,14 @@ export const GaragesCreate = () => {
   // Fetch amenities for select
   const { selectProps: amenitySelectProps } = useSelect({
     resource: "garage_amenities",
-    optionLabel: "name",
+    optionLabel: "label",
     optionValue: "id",
   });
 
   // Fetch main services for select
   const { selectProps: serviceSelectProps } = useSelect({
     resource: "garage_main_services",
-    optionLabel: "name", 
+    optionLabel: "title", 
     optionValue: "id",
   });
 
@@ -609,84 +609,116 @@ export const GaragesCreate = () => {
 
   return (
     <Create saveButtonProps={saveButtonProps}>
-      <Form {...formProps} layout="vertical" size="large">
-        <Row gutter={[24, 24]}>
-          {/* Basic Information */}
-          <Col xs={24} lg={12}>
-            <Card title="Thông tin cơ bản" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
-                <Form.Item
-                  label="Tên Garage"
-                  name="name"
-                  rules={[{ required: true, message: "Vui lòng nhập tên garage" }]}
-                >
-                  <Input 
-                    placeholder="Nhập tên garage" 
-                    onChange={handleNameChange}
+      <Form {...formProps} layout="vertical" size="middle">
+        <Row gutter={[16, 16]}>
+          {/* THÔNG TIN CHÍNH - Quan trọng nhất */}
+          <Col xs={24}>
+            <Card title="📋 Thông tin chính" className="tw-shadow-lg tw-border-l-4 tw-border-l-blue-500">
+              <Row gutter={[16, 12]}>
+                <Col xs={24} lg={12}>
+                  <Form.Item
+                    label="Tên Garage"
+                    name="name"
+                    rules={[{ required: true, message: "Vui lòng nhập tên garage" }]}
+                  >
+                    <Input
+                      placeholder="Nhập tên garage"
+                      onChange={handleNameChange}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                  <Form.Item
+                    label="Trạng thái"
+                    name="status"
+                    rules={[{ required: true, message: "Vui lòng chọn trạng thái" }]}
+                  >
+                    <Select placeholder="Chọn trạng thái">
+                      <Option value="active">✅ Hoạt động</Option>
+                      <Option value="inactive">❌ Không hoạt động</Option>
+                      <Option value="pending">⏳ Chờ duyệt</Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col xs={24}>
+                  <Form.Item
+                    label="Mô tả Garage"
+                    name="description"
+                    rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
+                  >
+                  <TextArea
+                    rows={2}
+                    placeholder="Mô tả chi tiết về garage, dịch vụ, ưu điểm..."
                   />
-                </Form.Item>
-
-                <Form.Item
-                  label="Slug"
-                  name="slug"
-                  help="Slug được tự động tạo từ tên garage"
-                >
-                  <Input 
-                    placeholder="garage-name-slug" 
-                    readOnly
-                    className="tw-bg-gray-50"
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  label="Địa chỉ"
-                  name="address_text"
-                  rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
-                >
-                  <TextArea 
-                    rows={3} 
+                  </Form.Item>
+                </Col>
+                <Col xs={24}>
+                  <Form.Item
+                    label="Địa chỉ"
+                    name="address_text"
+                    rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
+                  >
+                  <TextArea
+                    rows={1}
                     placeholder="Nhập địa chỉ đầy đủ của garage"
                   />
-                </Form.Item>
-
-                    <Form.Item
-                      label="Google Place ID"
-                      name="google_place_id"
-                    >
-                      <Input placeholder="ChIJ..." />
-                    </Form.Item>
-
-                    <Form.Item
-                      label="YouTube ID"
-                      name="youtube_id"
-                      help="ID video YouTube của garage (ví dụ: dQw4w9WgXcQ)"
-                    >
-                      <Input placeholder="dQw4w9WgXcQ" />
-                    </Form.Item>
-
-                    <Form.Item
-                      label="Hình Cover"
-                      name="cover_image"
-                      help="URL hình ảnh cover của garage"
-                    >
-                      <Input placeholder="https://example.com/cover.jpg" />
-                    </Form.Item>
-              </Space>
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={8}>
+                  <Form.Item
+                    label="Slug"
+                    name="slug"
+                    help="Slug được tự động tạo từ tên garage"
+                  >
+                    <Input
+                      placeholder="garage-name-slug"
+                      readOnly
+                      disabled
+                      className="tw-bg-gray-50"
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={8}>
+                  <Form.Item
+                    label="Google Place ID"
+                    name="google_place_id"
+                  >
+                    <Input placeholder="ChIJ..." />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={8}>
+                  <Form.Item
+                    label="YouTube ID"
+                    name="youtube_id"
+                    help="ID video YouTube của garage"
+                  >
+                    <Input placeholder="dQw4w9WgXcQ" />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={8}>
+                  <Form.Item
+                    label="Hình Cover"
+                    name="cover_image"
+                    help="URL hình ảnh cover của garage"
+                  >
+                    <Input placeholder="https://example.com/cover.jpg" />
+                  </Form.Item>
+                </Col>
+              </Row>
             </Card>
           </Col>
 
-          {/* Location & Rating */}
+          {/* VỊ TRÍ & ĐÁNH GIÁ */}
           <Col xs={24} lg={12}>
-            <Card title="Vị trí & Đánh giá" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
+            <Card title="📍 Vị trí & Đánh giá" className="tw-shadow-sm">
+              <Space direction="vertical" size="middle" className="tw-w-full">
                 <Row gutter={16}>
                   <Col span={12}>
                     <Form.Item
                       label="Vĩ độ (Latitude)"
                       name="lat"
-                      rules={[{ required: true, message: "Vui lòng nhập vĩ độ" }]}
                     >
-                      <InputNumber 
+                      <InputNumber
                         style={{ width: '100%' }}
                         placeholder="10.762622"
                         precision={6}
@@ -697,9 +729,8 @@ export const GaragesCreate = () => {
                     <Form.Item
                       label="Kinh độ (Longitude)"
                       name="lng"
-                      rules={[{ required: true, message: "Vui lòng nhập kinh độ" }]}
                     >
-                      <InputNumber 
+                      <InputNumber
                         style={{ width: '100%' }}
                         placeholder="106.660172"
                         precision={6}
@@ -707,7 +738,6 @@ export const GaragesCreate = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-
                 <Form.Item
                   label="Đánh giá (0-5)"
                   name="rating"
@@ -716,7 +746,7 @@ export const GaragesCreate = () => {
                     { type: 'number', min: 0, max: 5, message: "Đánh giá từ 0-5" }
                   ]}
                 >
-                  <InputNumber 
+                  <InputNumber
                     style={{ width: '100%' }}
                     placeholder="4.5"
                     min={0}
@@ -725,26 +755,14 @@ export const GaragesCreate = () => {
                     precision={1}
                   />
                 </Form.Item>
-
-                <Form.Item
-                  label="Trạng thái"
-                  name="status"
-                  rules={[{ required: true, message: "Vui lòng chọn trạng thái" }]}
-                >
-                  <Select placeholder="Chọn trạng thái">
-                    <Option value="active">Hoạt động</Option>
-                    <Option value="inactive">Không hoạt động</Option>
-                    <Option value="pending">Chờ duyệt</Option>
-                  </Select>
-                </Form.Item>
               </Space>
             </Card>
           </Col>
 
-          {/* Services & Amenities */}
-          <Col xs={24}>
-            <Card title="Dịch vụ & Tiện ích" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
+          {/* DỊCH VỤ & TIỆN ÍCH */}
+          <Col xs={24} lg={12}>
+            <Card title="🔧 Dịch vụ & Tiện ích" className="tw-shadow-sm">
+              <Space direction="vertical" size="middle" className="tw-w-full">
                 <Form.Item
                   label="Dịch vụ chính"
                   name="main_service_ids"
@@ -756,7 +774,6 @@ export const GaragesCreate = () => {
                     {...serviceSelectProps}
                   />
                 </Form.Item>
-
                 <Form.Item
                   label="Tiện ích"
                   name="amenity_ids"
@@ -772,111 +789,74 @@ export const GaragesCreate = () => {
             </Card>
           </Col>
 
-          {/* Hours of Operation */}
+          {/* GIỜ HOẠT ĐỘNG */}
           <Col xs={24}>
-            <Card title="Giờ hoạt động" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
-                <Form.Item
-                  label="Giờ hoạt động"
-                  name="hours_of_operation"
-                  help="Thiết lập giờ hoạt động cho từng ngày trong tuần"
-                >
-                  <HoursOfOperationForm />
-                </Form.Item>
-              </Space>
+            <Card title="🕒 Giờ hoạt động" className="tw-shadow-sm">
+              <Form.Item
+                name="hours_of_operation"
+                help="Thiết lập giờ hoạt động cho từng ngày trong tuần"
+              >
+                <HoursOfOperationForm />
+              </Form.Item>
             </Card>
           </Col>
 
-          {/* Pricing */}
-          <Col xs={24}>
-            <Card title="Bảng giá dịch vụ" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
-                <Form.Item
-                  label="Bảng giá"
-                  name="pricing"
-                  help="Thiết lập bảng giá cho các dịch vụ của garage"
-                >
-                  <PricingForm />
-                </Form.Item>
-              </Space>
+          {/* BẢNG GIÁ & THÔNG TIN KỸ THUẬT */}
+          <Col xs={24} lg={12}>
+            <Card title="💰 Bảng giá dịch vụ" className="tw-shadow-sm">
+              <Form.Item
+                name="pricing"
+                help="Thiết lập bảng giá cho các dịch vụ của garage"
+              >
+                <PricingForm />
+              </Form.Item>
             </Card>
           </Col>
 
-          {/* Technical Information */}
+          <Col xs={24} lg={12}>
+            <Card title="⚙️ Thông tin kỹ thuật" className="tw-shadow-sm">
+              <Form.Item
+                name="technical_information"
+                help="Thiết lập thông tin kỹ thuật của garage"
+              >
+                <TechnicalInformationForm />
+              </Form.Item>
+            </Card>
+          </Col>
+
+          {/* HÌNH ẢNH GARAGE - Full width */}
           <Col xs={24}>
-            <Card title="Thông tin kỹ thuật" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
-                <Form.Item
-                  label="Thông tin kỹ thuật"
-                  name="technical_information"
-                  help="Thiết lập thông tin kỹ thuật của garage"
-                >
-                  <TechnicalInformationForm />
-                </Form.Item>
-              </Space>
+            <Card title="🖼️ Hình ảnh Garage" className="tw-shadow-sm">
+              <Form.Item
+                name="images"
+                help="Thiết lập hình ảnh của garage với alt text, URL, caption và thứ tự"
+              >
+                <ImagesForm />
+              </Form.Item>
+            </Card>
+          </Col>
+
+          {/* CHỨNG CHỈ */}
+          <Col xs={24} lg={12}>
+            <Card title="🏆 Chứng chỉ & Giấy phép" className="tw-shadow-sm">
+              <Form.Item
+                name="certificate"
+                help="Thiết lập chứng chỉ và giấy phép của garage"
+              >
+                <CertificateForm />
+              </Form.Item>
             </Card>
           </Col>
 
           {/* FAQ */}
           <Col xs={24}>
-            <Card title="Câu hỏi thường gặp" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
-                <Form.Item
-                  label="FAQ"
-                  name="faq"
-                  help="Thiết lập câu hỏi thường gặp cho garage"
-                >
-                  <FAQForm />
-                </Form.Item>
-              </Space>
-            </Card>
-          </Col>
-
-          {/* Certificate */}
-          <Col xs={24}>
-            <Card title="Chứng chỉ & Giấy phép" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
-                <Form.Item
-                  label="Chứng chỉ"
-                  name="certificate"
-                  help="Thiết lập chứng chỉ và giấy phép của garage"
-                >
-                  <CertificateForm />
-                </Form.Item>
-              </Space>
-            </Card>
-          </Col>
-
-          {/* Images */}
-          <Col xs={24}>
-            <Card title="Hình ảnh Garage" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
-                <Form.Item
-                  label="Hình ảnh"
-                  name="images"
-                  help="Thiết lập hình ảnh của garage với alt text, URL, caption và thứ tự"
-                >
-                  <ImagesForm />
-                </Form.Item>
-              </Space>
-            </Card>
-          </Col>
-
-          {/* Additional Details */}
-          <Col xs={24}>
-            <Card title="Chi tiết bổ sung" className="tw-shadow-sm">
-              <Space direction="vertical" size="large" className="tw-w-full">
-                <Form.Item
-                  label="Chi tiết (JSON)"
-                  name="detail"
-                  help="Thông tin chi tiết bổ sung dưới dạng JSON"
-                >
-                  <TextArea 
-                    rows={6} 
-                    placeholder='{"description": "Mô tả garage", "phone": "0123456789", "email": "contact@garage.com"}'
-                  />
-                </Form.Item>
-              </Space>
+            <Card title="❓ Câu hỏi thường gặp" className="tw-shadow-sm">
+              <Form.Item
+                name="faq"
+                help="Thiết lập câu hỏi thường gặp cho garage"
+              >
+                <FAQForm />
+              </Form.Item>
             </Card>
           </Col>
         </Row>
