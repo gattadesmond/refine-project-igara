@@ -29,7 +29,7 @@ import {
   AppstoreOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
-import {  useMany } from "@refinedev/core";
+import { useMany } from "@refinedev/core";
 
 const { Text, Title } = Typography;
 const { Option } = Select;
@@ -109,7 +109,6 @@ export const GaragesList = () => {
   const renderGarageCard = (record: any) => (
     <Col xs={24} sm={12} lg={8} xl={6} key={record.id}>
       <Card
-        hoverable
         className="tw-h-full tw-shadow-md hover:tw-shadow-lg tw-transition-shadow"
         cover={
           <div className="tw-relative tw-h-48 tw-bg-gradient-to-br tw-from-blue-500 tw-to-purple-600 tw-flex tw-items-center tw-justify-center">
@@ -119,11 +118,11 @@ export const GaragesList = () => {
                 {record.address_text}
               </Text>
             </div> */}
-            <Badge 
-              count={getStatusText(record.status)} 
-              style={{ 
-                backgroundColor: getStatusColor(record.status) === 'green' ? '#52c41a' : 
-                               getStatusColor(record.status) === 'red' ? '#ff4d4f' : '#faad14'
+            <Badge
+              count={getStatusText(record.status)}
+              style={{
+                backgroundColor: getStatusColor(record.status) === 'green' ? '#52c41a' :
+                  getStatusColor(record.status) === 'red' ? '#ff4d4f' : '#faad14'
               }}
               className="tw-absolute tw-top-2 tw-right-2"
             />
@@ -152,9 +151,10 @@ export const GaragesList = () => {
           </div>
 
           <div className="tw-flex tw-items-center tw-space-x-2">
-            <Rate 
-              disabled 
-              value={record.rating || 0} 
+            <Rate
+              disabled
+              allowHalf
+              value={record.rating || 0}
               className="tw-text-yellow-500"
             />
             <Text className="tw-text-sm tw-text-gray-600">
@@ -169,7 +169,7 @@ export const GaragesList = () => {
                 {record.address_text}
               </Text>
             </div>
-            
+
             {record.lat && record.lng && (
               <div className="tw-flex tw-items-center tw-space-x-2">
                 <GlobalOutlined className="tw-text-gray-500" />
