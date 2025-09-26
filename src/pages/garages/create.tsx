@@ -663,6 +663,14 @@ export const GaragesCreate = () => {
                     >
                       <Input placeholder="dQw4w9WgXcQ" />
                     </Form.Item>
+
+                    <Form.Item
+                      label="Hình Cover"
+                      name="cover_image"
+                      help="URL hình ảnh cover của garage"
+                    >
+                      <Input placeholder="https://example.com/cover.jpg" />
+                    </Form.Item>
               </Space>
             </Card>
           </Col>
