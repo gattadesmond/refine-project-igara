@@ -1,12 +1,112 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, InputNumber, Switch, Row, Col, Typography, Card, Space, Button } from "antd";
+import { Form, Input, Select, InputNumber, Switch, Row, Col, Typography, Card, Space, Button, TimePicker } from "antd";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { supabaseClient } from "../../utility";
 import slugify from "slugify";
+import dayjs from "dayjs";
 
 const { TextArea } = Input;
 const { Option } = Select;
 const { Title, Text } = Typography;
+
+// Hours of Operation Component
+const HoursOfOperationForm = ({ value, onChange }: { value?: any[], onChange?: (value: any[]) => void }) => {
+  const [hours, setHours] = useState(value || []);
+
+  // Sync with form value
+  useEffect(() => {
+    if (value) {
+      setHours(value);
+    }
+  }, [value]);
+
+  const addHour = () => {
+    const newHours = [...hours, { days: "", open: "08:00", close: "18:00" }];
+    setHours(newHours);
+    onChange?.(newHours);
+  };
+
+  const removeHour = (index: number) => {
+    const newHours = hours.filter((_, i) => i !== index);
+    setHours(newHours);
+    onChange?.(newHours);
+  };
+
+  const updateHour = (index: number, field: string, value: any) => {
+    const newHours = hours.map((hour, i) =>
+      i === index ? { ...hour, [field]: value } : hour
+    );
+    setHours(newHours);
+    onChange?.(newHours);
+  };
+
+  return (
+    <div className="tw-space-y-4">
+      {hours.length === 0 ? (
+        <div className="tw-text-center tw-py-8 tw-text-gray-500">
+          <Text>Chưa có giờ hoạt động nào. Hãy thêm giờ hoạt động cho garage.</Text>
+        </div>
+      ) : (
+        hours.map((hour, index) => (
+          <Card key={index} size="small" className="tw-bg-gray-50">
+            <Row gutter={[16, 16]} align="middle">
+              <Col xs={24} sm={8}>
+                <Form.Item label="Ngày trong tuần" className="tw-mb-0">
+                  <Input
+                    value={hour.days}
+                    onChange={(e) => updateHour(index, 'days', e.target.value)}
+                    placeholder="Thứ 2 – Thứ 6"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={4}>
+                <Form.Item label="Giờ mở" className="tw-mb-0">
+                  <TimePicker
+                    value={hour.open ? dayjs(hour.open, 'HH:mm') : null}
+                    onChange={(time) => updateHour(index, 'open', time ? time.format('HH:mm') : '08:00')}
+                    format="HH:mm"
+                    className="tw-w-full"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={4}>
+                <Form.Item label="Giờ đóng" className="tw-mb-0">
+                  <TimePicker
+                    value={hour.close ? dayjs(hour.close, 'HH:mm') : null}
+                    onChange={(time) => updateHour(index, 'close', time ? time.format('HH:mm') : '18:00')}
+                    format="HH:mm"
+                    className="tw-w-full"
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={8} className="tw-text-right">
+                <Button
+                  type="text"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={() => removeHour(index)}
+                  disabled={hours.length <= 1}
+                >
+                  Xóa
+                </Button>
+              </Col>
+            </Row>
+          </Card>
+        ))
+      )}
+
+      <Button
+        type="dashed"
+        onClick={addHour}
+        icon={<PlusOutlined />}
+        className="tw-w-full"
+      >
+        Thêm giờ hoạt động
+      </Button>
+    </div>
+  );
+};
 
 export const GaragesEdit = () => {
   const { formProps, saveButtonProps } = useForm({
@@ -16,14 +116,14 @@ export const GaragesEdit = () => {
   // Fetch amenities for select
   const { selectProps: amenitySelectProps } = useSelect({
     resource: "garage_amenities",
-    optionLabel: "name",
+    optionLabel: "label",
     optionValue: "id",
   });
 
   // Fetch main services for select
   const { selectProps: serviceSelectProps } = useSelect({
     resource: "garage_main_services",
-    optionLabel: "name", 
+    optionLabel: "title",
     optionValue: "id",
   });
 
@@ -53,20 +153,31 @@ export const GaragesEdit = () => {
                   name="name"
                   rules={[{ required: true, message: "Vui lòng nhập tên garage" }]}
                 >
-                  <Input 
-                    placeholder="Nhập tên garage" 
+                  <Input
+                    placeholder="Nhập tên garage"
                     onChange={handleNameChange}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="Mô tả Garage"
+                  name="description"
+                  rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
+                >
+                  <TextArea
+                    rows={4}
+                    placeholder="Nhập tên garage"
                   />
                 </Form.Item>
 
                 <Form.Item
                   label="Slug"
                   name="slug"
-                  
+
                   help="Slug được tự động tạo từ tên garage"
                 >
-                  <Input 
-                    placeholder="garage-name-slug" 
+                  <Input
+                    placeholder="garage-name-slug"
                     readOnly
                     disabled
                     className="tw-bg-gray-50"
@@ -78,8 +189,8 @@ export const GaragesEdit = () => {
                   name="address_text"
                   rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
                 >
-                  <TextArea 
-                    rows={3} 
+                  <TextArea
+                    rows={3}
                     placeholder="Nhập địa chỉ đầy đủ của garage"
                   />
                 </Form.Item>
@@ -105,7 +216,7 @@ export const GaragesEdit = () => {
                       name="lat"
                       rules={[{ required: true, message: "Vui lòng nhập vĩ độ" }]}
                     >
-                      <InputNumber 
+                      <InputNumber
                         style={{ width: '100%' }}
                         placeholder="10.762622"
                         precision={6}
@@ -118,7 +229,7 @@ export const GaragesEdit = () => {
                       name="lng"
                       rules={[{ required: true, message: "Vui lòng nhập kinh độ" }]}
                     >
-                      <InputNumber 
+                      <InputNumber
                         style={{ width: '100%' }}
                         placeholder="106.660172"
                         precision={6}
@@ -135,7 +246,7 @@ export const GaragesEdit = () => {
                     { type: 'number', min: 0, max: 5, message: "Đánh giá từ 0-5" }
                   ]}
                 >
-                  <InputNumber 
+                  <InputNumber
                     style={{ width: '100%' }}
                     placeholder="4.5"
                     min={0}
@@ -191,6 +302,21 @@ export const GaragesEdit = () => {
             </Card>
           </Col>
 
+          {/* Hours of Operation */}
+          <Col xs={24}>
+            <Card title="Giờ hoạt động" className="tw-shadow-sm">
+              <Space direction="vertical" size="large" className="tw-w-full">
+                <Form.Item
+                  label="Giờ hoạt động"
+                  name="hours_of_operation"
+                  help="Thiết lập giờ hoạt động cho từng ngày trong tuần"
+                >
+                  <HoursOfOperationForm />
+                </Form.Item>
+              </Space>
+            </Card>
+          </Col>
+
           {/* Additional Details */}
           <Col xs={24}>
             <Card title="Chi tiết bổ sung" className="tw-shadow-sm">
@@ -200,9 +326,9 @@ export const GaragesEdit = () => {
                   name="detail"
                   help="Thông tin chi tiết bổ sung dưới dạng JSON"
                 >
-                  <TextArea 
-                    rows={6} 
-                    placeholder='{"description": "Mô tả garage", "hours": "8:00-18:00", "phone": "0123456789"}'
+                  <TextArea
+                    rows={6}
+                    placeholder='{"description": "Mô tả garage", "phone": "0123456789", "email": "contact@garage.com"}'
                   />
                 </Form.Item>
               </Space>
