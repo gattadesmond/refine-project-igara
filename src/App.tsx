@@ -37,17 +37,23 @@ import {
   CategoryShow,
 } from "./pages/categories";
 import {
-  StoriesList,
-  StoriesCreate,
-  StoriesEdit,
-  StoriesShow,
-} from "./pages/stories";
+  GarageMainServicesEdit,
+  GarageMainServicesCreate,
+  GarageMainServicesList,
+  GarageMainServicesShow,
+} from "./pages/garage_main_services";
 import {
   GaragesList,
   GaragesCreate,
   GaragesEdit,
   GaragesShow,
 } from "./pages/garages";
+import {
+  GarageAmenitiesList,
+  GarageAmenitiesCreate,
+  GarageAmenitiesEdit,
+  GarageAmenitiesShow,
+} from "./pages/garage_amenities";
 import { AppIcon } from "./components/app-icon";
 import { supabaseClient } from "./utility";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -68,30 +74,12 @@ function App() {
                 authProvider={authProvider}
                 routerProvider={routerProvider}
                 notificationProvider={useNotificationProvider}
-                resources={[{
-                  name: "blog_posts",
-                  list: "/blog-posts",
-                  create: "/blog-posts/create",
-                  edit: "/blog-posts/edit/:id",
-                  show: "/blog-posts/show/:id",
-                  meta: {
-                    canDelete: true,
-                  },
-                }, {
-                  name: "categories",
-                  list: "/categories",
-                  create: "/categories/create",
-                  edit: "/categories/edit/:id",
-                  show: "/categories/show/:id",
-                  meta: {
-                    canDelete: true,
-                  },
-                }, {
-                  name: "stories",
-                  list: "/stories",
-                  create: "/stories/create",
-                  edit: "/stories/edit/:id",
-                  show: "/stories/show/:id",
+                resources={[ {
+                  name: "garage_main_services",
+                  list: "/garage_main_services",
+                  create: "/garage_main_services/create",
+                  edit: "/garage_main_services/edit/:id",
+                  show: "/garage_main_services/show/:id",
                   meta: {
                     canDelete: true,
                   },
@@ -101,12 +89,18 @@ function App() {
                   create: "/garages/create",
                   edit: "/garages/edit/:id",
                   show: "/garages/show/:id"
+                }, {
+                  name: "garage_amenities",
+                  list: "/garage_amenities",
+                  create: "/garage_amenities/create",
+                  edit: "/garage_amenities/edit/:id",
+                  show: "/garage_amenities/show/:id"
                 }]}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
                   projectId: "74xzPC-NH2uih-JzeDqs",
-                  title: { text: "Refine Project", icon: <AppIcon /> },
+                  title: { text: "iGara Project", icon: <AppIcon /> },
                 }}
               >
                 <Routes>
@@ -129,23 +123,18 @@ function App() {
                       index
                       element={<NavigateToResource resource="blog_posts" />}
                     />
-                    <Route path="/blog-posts">
-                      <Route index element={<BlogPostList />} />
-                      <Route path="create" element={<BlogPostCreate />} />
-                      <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />
+                  
+                    <Route path="/garage_main_services">
+                      <Route index element={<GarageMainServicesList />} />
+                      <Route path="create" element={<GarageMainServicesCreate />} />
+                      <Route path="edit/:id" element={<GarageMainServicesEdit />} />
+                      <Route path="show/:id" element={<GarageMainServicesShow />} />
                     </Route>
-                    <Route path="/categories">
-                      <Route index element={<CategoryList />} />
-                      <Route path="create" element={<CategoryCreate />} />
-                      <Route path="edit/:id" element={<CategoryEdit />} />
-                      <Route path="show/:id" element={<CategoryShow />} />
-                    </Route>
-                    <Route path="/stories">
-                      <Route index element={<StoriesList />} />
-                      <Route path="create" element={<StoriesCreate />} />
-                      <Route path="edit/:id" element={<StoriesEdit />} />
-                      <Route path="show/:id" element={<StoriesShow />} />
+                    <Route path="/garage_amenities">
+                      <Route index element={<GarageAmenitiesList />} />
+                      <Route path="create" element={<GarageAmenitiesCreate />} />
+                      <Route path="edit/:id" element={<GarageAmenitiesEdit />} />
+                      <Route path="show/:id" element={<GarageAmenitiesShow />} />
                     </Route>
                     <Route path="/garages">
                       <Route index element={<GaragesList />} />

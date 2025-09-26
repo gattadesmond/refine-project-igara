@@ -1,5 +1,5 @@
 import { AntdInferencer } from "@refinedev/inferencer/antd";
 
-export const StoriesCreate = () => {
+export const GarageMainServicesEdit = () => {
     return <AntdInferencer />;
 };
